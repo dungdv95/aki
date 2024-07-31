@@ -106,12 +106,12 @@ export default function LayoutLeft({ children }: LayoutProps) {
         <div className="flex h-full">
           <div
             className={cn(
-              "border-r bg-muted/40",
-              !isCollapsed && "min-w-[255px]"
+              "border-r border-r-[#151529] dark:border-r-[#212529]  bg-[#151529] dark:bg-[#212529]",
+              !isCollapsed && "min-w-[260px]"
             )}
           >
             <div className="flex h-full w-full flex-col gap-2">
-              <div className="flex min-h-[60px] items-center justify-center border-b px-2 lg:h-[60px] ">
+              <div className="flex min-h-[60px] items-center justify-center px-2 lg:h-[60px] ">
                 {isCollapsed ? (
                   <div
                     className={cn("flex h-[52px] items-center justify-center")}
@@ -128,10 +128,12 @@ export default function LayoutLeft({ children }: LayoutProps) {
                   <>
                     <Link
                       href="/"
-                      className="flex items-center gap-2 font-semibold"
+                      className="flex gap-2 font-semibold text-white "
                     >
                       <HomeIcon className="h-6 w-6" />
-                      <span className="">Home</span>
+                      <span className="font-extrabold font-sans text-xl ">
+                        Home
+                      </span>
                     </Link>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import apis from "@/lib/apis/system";
 import ErrorNotice from "../notice/error-notice";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface SelectProps {
   code: string;
@@ -100,6 +100,7 @@ export default function UnusedCode({ value, disable, onChange }: UnCodeProps) {
                 </CommandItem>
               ))}
             </CommandGroup>
+            <ScrollBar orientation="vertical" />
           </ScrollArea>
         </Command>
       </PopoverContent>

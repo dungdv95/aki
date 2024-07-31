@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import apis from "@/lib/apis/common";
 import ErrorNotice from "../notice/error-notice";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface CommunesProps {
   id: string;
@@ -106,6 +106,7 @@ export default function CommunesSelect({
                 ))}
               </CommandGroup>
             )}
+            <ScrollBar orientation="vertical" />
           </ScrollArea>
         </Command>
       </PopoverContent>

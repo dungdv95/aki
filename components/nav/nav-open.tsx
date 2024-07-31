@@ -7,6 +7,7 @@ import {
   Home,
   LineChart,
   Menu,
+  Minus,
   Package,
   Package2,
   Power,
@@ -18,7 +19,7 @@ import { Fragment } from "react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Disclosure } from "@headlessui/react";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { Button, buttonVariants } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
@@ -32,7 +33,7 @@ export default function NavOpen({ links, isCollapsed }: NavProps) {
     <>
       <ScrollArea className="h-full flex-auto">
         <div className="flex-1">
-          <nav className="grid gap-2 items-start text-sm font-medium px-2">
+          <nav className="grid gap-1 items-start text-sm font-medium px-2">
             {links.map((link) => {
               return (
                 <Fragment key={link.url}>
@@ -42,11 +43,16 @@ export default function NavOpen({ links, isCollapsed }: NavProps) {
             })}
           </nav>
         </div>
+        <ScrollBar orientation="vertical" className="bg-[#a2adb7] opacity-50" />
       </ScrollArea>
       <div className="h-12 p-2 flex items-center justify-center">
         {!isCollapsed ? (
           <Button
-            className="h-9 w-full justify-start dark:hover:bg-muted dark:hover:text-white"
+            className={cn(
+              "h-9 w-full justify-start",
+              "text-[#a3a6b7] dark:text-[#7c7f90] hover:text-white dark:hover:text-white",
+              "hover:bg-[#151529] dark:hover:bg-[#212529]"
+            )}
             size={"sm"}
             variant={"ghost"}
             onClick={() => {}}
@@ -57,7 +63,11 @@ export default function NavOpen({ links, isCollapsed }: NavProps) {
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
               <Button
-                className="h-9 w-9 dark:hover:bg-muted dark:hover:text-white"
+                className={cn(
+                  "h-9 w-9",
+                  "text-[#a3a6b7] dark:text-[#7c7f90] hover:text-white dark:hover:text-white",
+                  "hover:bg-[#151529] dark:hover:bg-[#212529]"
+                )}
                 size={"icon"}
                 variant={"ghost"}
                 onClick={() => {}}
@@ -99,8 +109,8 @@ const NavContent = ({
               <Disclosure.Panel
                 as="ul"
                 className={cn(
-                  "mt-1 flex flex-col gap-2",
-                  !isCollapsed ? "px-4" : "px-0"
+                  "flex flex-col gap-1",
+                  !isCollapsed ? "px-3" : "px-0"
                 )}
               >
                 {item.items.map((subItem: SidebarItem) => {
@@ -142,38 +152,59 @@ const NavItem = ({
                   href={"#"}
                   className={cn(
                     buttonVariants({
-                      variant: pathName.includes(item.url)
-                        ? "default"
-                        : "ghost",
+                      variant: "ghost",
                       size: "icon",
                     }),
                     "h-9 w-9",
-                    pathName.includes(item.url) &&
-                      "bg-gray-200 text-[rgb(2, 8, 23)] hover:bg-muted dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
+                    "text-[#a3a6b7] dark:text-[#7c7f90] hover:text-white dark:hover:text-white",
+                    "hover:bg-[#151529] dark:hover:bg-[#212529]",
+                    pathName.includes(item.url) && "text-white dark:text-white"
                   )}
                 >
                   <item.icon className="h-4 w-4" />
                   <span className="sr-only">{item.title}</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right" className="w-56 gap-4" align="start">
-                <div className="flex flex-col gap-2">
+              <TooltipContent
+                side="right"
+                className="min-w-56 gap-4 bg-[#151529] dark:bg-[#212529] border-0 py-2"
+                align="start"
+              >
+                <div
+                  className={cn(
+                    "flex justify-start gap-2 relative mb-3",
+                    "text-[#a3a6b7] dark:text-[#7c7f90] hover:text-white dark:hover:text-white",
+                    "hover:bg-[#151529] dark:hover:bg-[#212529]",
+                    pathName.includes(item.url) && "text-white dark:text-white"
+                  )}
+                >
+                  {item.title}
+                  <ChevronRightIcon
+                    className={cn(
+                      "rotate-90 ",
+                      "h-4 w-4 shrink-0 absolute right-[8px] top-[2px]"
+                    )}
+                    aria-hidden="true"
+                  />
+                </div>
+                <div className="flex flex-col gap-1 px-1">
                   {item.items.map((subItem) => (
                     <Link
                       key={subItem.url}
                       href={subItem.url}
                       className={cn(
                         buttonVariants({
-                          variant: pathName.includes(subItem.url)
-                            ? "default"
-                            : "ghost",
+                          variant: "ghost",
                           size: "sm",
                         }),
                         getIncludes(pathName, subItem.url),
-
-                        "justify-start w-full gap-2"
+                        "text-[13px]",
+                        "justify-start w-full gap-2 px-2",
+                        "text-[#a3a6b7] dark:text-[#7c7f90] hover:text-white dark:hover:text-white",
+                        "hover:bg-[#151529] dark:hover:bg-[#212529]"
                       )}
                     >
+                      <Minus className="h-3 w-2 mr-[2px]" />
                       {/* <subItem.icon className="h-4 w-4" /> */}
                       {subItem.title}
                     </Link>
@@ -182,6 +213,24 @@ const NavItem = ({
               </TooltipContent>
             </Tooltip>
           )}
+          {!isRoot && item.level < 1 && (
+            <Link
+              href={item.url}
+              className={cn(
+                buttonVariants({
+                  variant: "ghost",
+                  size: "icon",
+                }),
+                "h-9 w-9",
+                "text-[#a3a6b7] dark:text-[#7c7f90] hover:text-white dark:hover:text-white",
+                pathName.includes(item.url) && "text-white dark:text-white",
+                "hover:bg-[#151529] dark:hover:bg-[#212529]"
+              )}
+            >
+              <item.icon className="h-4 w-4" />
+              <span className="sr-only">{item.title}</span>
+            </Link>
+          )}
         </>
       ) : (
         <>
@@ -189,24 +238,25 @@ const NavItem = ({
             <Disclosure.Button
               className={cn(
                 buttonVariants({
-                  variant: item.url === pathName ? "default" : "ghost",
+                  variant: "ghost",
                   size: "sm",
                 }),
-                item.url === pathName &&
-                  "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                isRoot && pathName.includes(item.url)
-                  ? "bg-gray-200 dark:bg-gray-900"
-                  : "",
-                "justify-start w-full gap-2 relative"
+                // item.url === pathName &&
+                //   "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
+                // isRoot && pathName.includes(item.url)
+                //   ? "bg-gray-200 dark:bg-gray-900"
+                //   : "",
+                "justify-start w-full gap-2 relative px-2",
+                "text-[#a3a6b7] dark:text-[#7c7f90] hover:text-white dark:hover:text-white",
+                "hover:bg-[#151529] dark:hover:bg-[#212529]",
+                pathName.includes(item.url) && "text-white dark:text-white"
               )}
             >
               <item.icon className="h-4 w-4" />
               {item.title}
               <ChevronRightIcon
                 className={cn(
-                  open
-                    ? "rotate-90 text-gray-500 dark:text-slate-200"
-                    : "text-gray-400 dark:text-slate-100",
+                  open && "rotate-90 ",
                   "h-5 w-5 shrink-0 absolute right-[10px]"
                 )}
                 aria-hidden="true"
@@ -217,7 +267,7 @@ const NavItem = ({
               href={item.url}
               className={cn(
                 buttonVariants({
-                  variant: pathName.includes(item.url) ? "default" : "ghost",
+                  variant: "ghost",
                   size: "sm",
                 }),
                 // pathName.includes(item.url) &&
@@ -226,10 +276,17 @@ const NavItem = ({
                 // pathName.includes(item.url)
                 //   ? "bg-gray-200 dark:bg-gray-900"
                 //   : "",
-                "justify-start w-full gap-2"
+                "text-[13px]",
+                "justify-start w-full gap-2 px-2",
+                "text-[#a3a6b7] dark:text-[#7c7f90] hover:text-white dark:hover:text-white",
+                "hover:bg-[#151529] dark:hover:bg-[#212529]"
               )}
             >
-              {/* <item.icon className="h-4 w-4" /> */}
+              {item.level === 0 ? (
+                <item.icon className="h-4 w-4" />
+              ) : (
+                <Minus className="h-3 w-2 mr-[2px]" />
+              )}
               {item.title}
             </Link>
           )}
@@ -240,11 +297,8 @@ const NavItem = ({
 };
 
 const getIncludes = (path: string, url: string) => {
-  if (path === url) {
-    return "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white";
-  }
-  if (path.includes(url)) {
-    return "bg-gray-200 text-[rgb(2, 8, 23)] hover:bg-muted dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white";
+  if (path.includes(url) || path === url) {
+    return "!text-white bg-[#151529] dark:bg-[#212529]";
   }
   return "";
 };
