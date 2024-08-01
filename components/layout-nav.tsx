@@ -1,5 +1,5 @@
 "use client";
-import { HomeIcon, Menu, MoonIcon, SunIcon } from "lucide-react";
+import { HomeIcon, Menu, MoonIcon, Sun, SunIcon } from "lucide-react";
 import Link from "next/link";
 
 import { useLoginStore } from "@/app/login/store";
@@ -139,23 +139,26 @@ export default function LayoutLeft({ children }: LayoutProps) {
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="outline"
-                          className="h-7 w-7 min-w-7 ml-auto"
+                          className={cn(
+                            "h-7 w-7 min-w-7 ml-auto",
+                            "bg-gray-700 border-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:bg-gray-700"
+                          )}
                           size="icon"
                         >
-                          <SunIcon className="h-3 w-3 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                          <MoonIcon className="absolute h-3 w-3 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                          <Sun className="h-[13px] w-[13px] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-white" />
+                          <MoonIcon className="absolute h-[13px] w-[13px] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-white" />
                           <span className="sr-only">Toggle theme</span>
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
+                      <DropdownMenuContent
+                        align="end"
+                        className="bg-gray-700 border-none text-white"
+                      >
                         <DropdownMenuItem onClick={() => setTheme("light")}>
                           Light
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setTheme("dark")}>
                           Dark
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("system")}>
-                          System
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
